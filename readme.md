@@ -5,8 +5,7 @@
 - [ ] diffusion model
   
 ## CycleGAN
-!!! warning
-    warning: 在运行代码前，请对代码中的路径进行修改
+
 ### 1.Get the data
 首先我们拥有了大量的初始数据，每个初始数据文件夹都代表一个病人，比如说：
 ```bash
