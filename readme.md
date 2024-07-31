@@ -89,3 +89,6 @@ If you have trained before, you can use the following command.
 python main.py --data_path ~/PatchBased_3DCycleGAN_CT_Synthesis/datasets/mri2pet/ --out_path ~/PatchBased_3DCycleGAN_CT_Synthesis/results/ --resume_training True --pretrained_path ~/PatchBased_3DCycleGAN_CT_Synthesis/results/20240731-170027/saved_weights/ --max_iterations 20 --save_train_freq 5
 ```
 
+## References
+- CycleGAN and pix2pix in PyTorch https://github.com/junyanz/pytorch-CycleGAN-and-pix2pix
+- PatchBased_3DCycleGAN_CT_Synthesis https://github.com/rekalantar/PatchBased_3DCycleGAN_CT_Synthesis
