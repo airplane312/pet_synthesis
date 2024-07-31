@@ -1,13 +1,21 @@
 # PET synthesis from MRI
 
-## What we want to try:
-- [x] CycleGAN
-- [ ] diffusion model
-  
-## CycleGAN
+## Software and hardware platform
+- AMD Instinct MI210 
+- ROCm 6.1
+- TensorFlow 2.13 ROCm 6.1
+- Pytorch 2.0.1_ROCm6.1.2
+- Ubuntu 20.04
+
+## What we want to try
+- [x] 2D CycleGAN
+- [x] 3D CycleGAN
+- [x] Accelerate using ROCm rather than CUDA
+ 
+## 2D CycleGAN
 
 ### 1.Get the data
-首先我们拥有了大量的初始数据，每个初始数据文件夹都代表一个病人，比如说：
+First, we have a large amount of initial data, with each initial data folder representing a patient. For example:
 ```bash
 (cv) ➜  B10081264 tree
 .
@@ -36,12 +44,12 @@
 
 0 directories, 22 files
 ```
-这里面我们选取一个T1作为MRI，一个Florbetapir_Br作为PET，从原始数据集中抽取50个病人，形成新的数据集（小数据集先用来训练玩具模型）
+Here, we select one T1 as MRI and one Florbetapir_Br as PET, extracting 50 patients from the original dataset to form a new dataset.(For 3D methods, the computational complexity is higher compared to 2D methods.)
 ```python
 python extract_files.py
 ```
 ### 2.Data preprocess
-这里我们神经网络需要图片输入，但是我们这里数据集是nii类型，所以需要转换成jpg图片
+Here, our neural network requires image inputs, but our dataset is in NIfTI format, so it needs to be converted to JPG images.
 ```python
 python data_preprocess.py
 ```
@@ -57,4 +65,27 @@ or
 ```python
 python test.py --dataroot ./datasets/mri2pet/testA --name mri2pet --model test --no_dropout --model_suffix _A --num_test 10
 ```
-第一个是双向的，第二个是单向的
+The first one is bidirectional, while the second one is unidirectional.
+Here is an example,the first one is the MRI image, and the second one is the synthesized PET image:
+![alt text](./img/A4_B46163069_MR_T1__GradWarp__DeFaced_Br_20201110170914231_S860798_I1363676.nii_real_A.png)
+![alt text](./img/A4_B46163069_MR_T1__GradWarp__DeFaced_Br_20201110170914231_S860798_I1363676.nii_fake_B.png)
+
+## 3D CycleGAN
+Here, we use 3D CycleGAN to synthesize PET from MRI.
+
+### 1.Get the data
+We need to perform similar processing on the data as we did earlier. The difference here is that the PET images require separate handling. This is because MRI images are three-dimensional, while PET images are four-dimensional, with the fourth dimension being time. Here, we need to calculate the average over the time dimension.
+```python 
+python data_split.py
+```
+### 2.Train
+To run the training code, you need to specify some parameters. Here is a feasible example. You can modify it based on your hardware capabilities.
+If this is your first time training.
+```bash
+python main.py path/to/data/directory path/to/save/results
+```
+If you have trained before, you can use the following command.
+```python
+python main.py --data_path ~/PatchBased_3DCycleGAN_CT_Synthesis/datasets/mri2pet/ --out_path ~/PatchBased_3DCycleGAN_CT_Synthesis/results/ --resume_training True --pretrained_path ~/PatchBased_3DCycleGAN_CT_Synthesis/results/20240731-170027/saved_weights/ --max_iterations 20 --save_train_freq 5
+```
+

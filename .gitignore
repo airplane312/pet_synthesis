@@ -1,5 +1,5 @@
-datasets/
+./2d_method/datasets/
 
-checkpoints/
+./2d_method/checkpoints/
 
-results/
+./2d_method/results/
