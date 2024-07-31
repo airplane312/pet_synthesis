@@ -67,7 +67,9 @@ python test.py --dataroot ./datasets/mri2pet/testA --name mri2pet --model test -
 ```
 The first one is bidirectional, while the second one is unidirectional.
 Here is an example,the first one is the MRI image, and the second one is the synthesized PET image:
+
 ![alt text](./img/A4_B46163069_MR_T1__GradWarp__DeFaced_Br_20201110170914231_S860798_I1363676.nii_real_A.png)
+
 ![alt text](./img/A4_B46163069_MR_T1__GradWarp__DeFaced_Br_20201110170914231_S860798_I1363676.nii_fake_B.png)
 
 ## 3D CycleGAN
